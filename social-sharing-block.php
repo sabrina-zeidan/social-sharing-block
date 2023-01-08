@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name:       Social Sharing Block
- * Description:       A simple little block that allows you to add social share icons to your website.
- * Requires at least: 5.9
+ * Description:       Effortlessly add social share icons to the WordPress block editor.
+ * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.6.0
+ * Version:           1.0.0
  * Author:            Nick Diego
  * Author URI:        https://www.nickdiego.com
  * License:           GPL-2.0-or-later
@@ -20,30 +20,10 @@
  * through the block editor in the corresponding context.
  */
 function outermost_social_sharing_init() {
-	register_block_type( __DIR__ . '/build/blocks/social-sharing' );
+	$blocks = array( 'social-sharing', 'social-sharing-link' );
 
-	// Load available translations.
-	wp_set_script_translations( 'outermost-social-sharing-scripts', 'social-sharing-block' );
+	foreach( $blocks as $block ) {
+		register_block_type( __DIR__ . '/build/' . $block . '/' );
+	}
 }
 add_action( 'init', 'outermost_social_sharing_init' );
-
-/**
- * Enqueue plugin specific editor scripts.
- *
- * @since 0.1.0
- */
-function outermost_social_sharing_enqueue_editor_assets() {
-	$asset_file = require_once dirname( __FILE__ ) . '/build/index.asset.php';
-
-	wp_enqueue_script(
-		'outermost-social-sharing-scripts',
-		plugin_dir_url( __FILE__ ) . 'build/index.js',
-		$asset_file['dependencies'],
-		$asset_file['version'],
-		false
-	);
-}
-add_action( 'enqueue_block_editor_assets', 'outermost_social_sharing_enqueue_editor_assets' );
-
-// The Social Sharing Link block is rendered server-side.
-require_once dirname( __FILE__ ) . '/build/blocks/social-sharing-link.php';

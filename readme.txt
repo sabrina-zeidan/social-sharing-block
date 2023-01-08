@@ -1,10 +1,10 @@
 === Social Sharing Block ===
 Contributors:      ndiego, outermostdesign
 Tags:              social, share, social icon, social share, block
-Requires at least: 5.9
-Tested up to:      6.0
+Requires at least: 6.1
+Tested up to:      6.1
 Requires PHP:      7.0
-Stable tag:        0.6.0
+Stable tag:        1.0.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,22 @@ Share options include:
 3. Effortlessly configure social icons to suite your needs with extensive layout, orientation, and size controls.
 
 == Changelog ==
+
+= 1.0.0 - 2023-01-09 =
+
+**Added**
+
+* Added support for Viber sharing.
+* Added support for copying the current URL. 
+* Added axial block spacing support.
+* Added left and right margin support.
+* Added padding support.
+
+**Changed**
+
+* Updated WordPress version requirement to 6.1+.
+* Updated icon color handling to better support Global Styles.
+* Updated and overhauled plugin structure.
 
 = 0.6.0 - 2022-08-21 =
 
