@@ -14,8 +14,9 @@ import {
 	useBlockProps,
 	InspectorControls,
 	ContrastChecker,
-	PanelColorSettings,
 	withColors,
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown, //eslint-disable-line
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients, //eslint-disable-line
 } from '@wordpress/block-editor';
 import {
 	MenuGroup,
@@ -26,6 +27,11 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { check } from '@wordpress/icons';
+
+/**
+ * Import editor-only block styles.
+ */
+import './editor.scss';
 
 const ALLOWED_BLOCKS = [ 'outermost/social-sharing-link' ];
 
@@ -55,6 +61,7 @@ const getDefaultBlockLayout = ( blockTypeOrName ) => {
 
 export function SocialSharingEdit( props ) {
 	const {
+		clientId,
 		name,
 		attributes,
 		iconBackgroundColor,
@@ -75,8 +82,7 @@ export function SocialSharingEdit( props ) {
 	const usedLayout = layout || getDefaultBlockLayout( name );
 
 	// Remove icon background color if logos only style selected.
-	const logosOnly =
-		attributes.className?.indexOf( 'is-style-logos-only' ) >= 0;
+	const logosOnly = attributes.className?.includes( 'is-style-logos-only' );
 
 	useEffect( () => {
 		if ( logosOnly ) {
@@ -135,6 +141,10 @@ export function SocialSharingEdit( props ) {
 				setAttributes( { iconColorValue: colorValue } );
 			},
 			label: __( 'Icon color', 'social-sharing-block' ),
+			resetAllFilter: () => {
+				setIconColor( undefined );
+				setAttributes( { iconColorValue: undefined } );
+			},
 		},
 	];
 
@@ -150,8 +160,14 @@ export function SocialSharingEdit( props ) {
 				} );
 			},
 			label: __( 'Icon background', 'social-sharing-block' ),
+			resetAllFilter: () => {
+				setIconBackgroundColor( undefined );
+				setAttributes( { iconBackgroundColorValue: undefined } );
+			},
 		} );
 	}
+
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	return (
 		<Fragment>
@@ -204,23 +220,38 @@ export function SocialSharingEdit( props ) {
 						}
 					/>
 				</PanelBody>
-				<PanelColorSettings
-					colorSettings={ colorSettings }
-					enableAlpha
-					title={ __( 'Color', 'social-sharing-block' ) }
-					__experimentalHasMultipleOrigins
-					__experimentalIsRenderedInSidebar
-				>
-					{ ! logosOnly && (
-						<ContrastChecker
-							{ ...{
-								textColor: iconColorValue,
-								backgroundColor: iconBackgroundColorValue,
-							} }
-							isLargeText={ false }
+			</InspectorControls>
+			<InspectorControls __experimentalGroup="color">
+				{ colorSettings.map(
+					( { onChange, label, value, resetAllFilter } ) => (
+						<ColorGradientSettingsDropdown
+							key={ `social-links-color-${ label }` }
+							__experimentalIsRenderedInSidebar
+							__experimentalHasMultipleOrigins // Need for 6.1 compatibility.
+							settings={ [
+								{
+									colorValue: value,
+									label,
+									onColorChange: onChange,
+									isShownByDefault: true,
+									resetAllFilter,
+									enableAlpha: true,
+								},
+							] }
+							panelId={ clientId }
+							{ ...colorGradientSettings }
 						/>
-					) }
-				</PanelColorSettings>
+					)
+				) }
+				{ ! logosOnly && (
+					<ContrastChecker
+						{ ...{
+							textColor: iconColorValue,
+							backgroundColor: iconBackgroundColorValue,
+						} }
+						isLargeText={ false }
+					/>
+				) }
 			</InspectorControls>
 			<ul { ...innerBlocksProps } />
 		</Fragment>

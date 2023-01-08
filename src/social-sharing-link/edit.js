@@ -16,16 +16,33 @@ import {
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
+ * Import editor-only block styles.
+ */
+import './editor.scss';
+
+/**
  * Internal dependencies
  */
 import { getIconBySite, getNameBySite, getLabelBySite } from './social-list';
 
 const SocialSharingLinkEdit = ( { attributes, context, setAttributes } ) => {
 	const { service, label } = attributes;
-	const { showLabels, iconColorValue, iconBackgroundColorValue } = context;
+	const { 
+		showLabels, 
+		iconColor, 
+		iconColorValue, 
+		iconBackgroundColor,
+		iconBackgroundColorValue,
+	} = context;
+
 	const classes = classNames(
 		'outermost-social-sharing-link',
-		'outermost-social-sharing-link-' + service
+		'outermost-social-sharing-link-' + service,
+		{
+			[ `has-${ iconColor }-color` ]: iconColor,
+			[ `has-${ iconBackgroundColor }-background-color` ]:
+				iconBackgroundColor,
+		}
 	);
 
 	const IconComponent = getIconBySite( service );
@@ -60,7 +77,7 @@ const SocialSharingLinkEdit = ( { attributes, context, setAttributes } ) => {
 								'Briefly describe the share link to help screen reader users.',
 								'social-sharing-block'
 							) }
-							value={ label }
+							value={ label || '' }
 							onChange={ ( value ) =>
 								setAttributes( { label: value } )
 							}

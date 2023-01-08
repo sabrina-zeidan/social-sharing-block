@@ -1,63 +1,11 @@
 <?php
 /**
- * Server-side rendering of the `outermost/social-sharing-link` block.
+ * Utility functions for the `outermost/social-sharing-link` block.
  *
  * @package Social Sharing Block
  */
 
-/**
- * Renders the `outermost/social-sharing-link` block on server.
- *
- * @param Array    $attributes The block attributes.
- * @param String   $content    InnerBlocks content of the Block.
- * @param WP_Block $block      Block object.
- *
- * @return string Rendered HTML of the referenced block.
- */
-function render_block_outermost_social_sharing_link( $attributes, $content, $block ) { // phpcs:ignore
-	$service     = ( isset( $attributes['service'] ) ) ? $attributes['service'] : 'mail';
-	$url         = block_outermost_social_sharing_link_get_url( $service );
-	$label       = ( isset( $attributes['label'] ) ) ? $attributes['label'] : block_outermost_social_sharing_link_get_label( $service );
-	$show_labels = array_key_exists( 'showLabels', $block->context ) ? $block->context['showLabels'] : false;
-	$class_name  = isset( $attributes['className'] ) ? ' ' . $attributes['className'] : false;
-
-	$rel_target_attributes = '';
-
-	if ( 'print' !== $service && 'mail' !== $service ) {
-		$rel_target_attributes = 'rel="noopener nofollow" target="_blank"';
-	}
-
-	$icon               = block_outermost_social_sharing_link_get_icon( $service );
-	$wrapper_attributes = get_block_wrapper_attributes(
-		array(
-			'class' => 'outermost-social-sharing-link outermost-social-sharing-link-' . $service . $class_name,
-			'style' => block_outermost_social_sharing_link_get_color_styles( $block->context ),
-		)
-	);
-
-	$link  = '<li ' . $wrapper_attributes . '>';
-	$link .= '<a href="' . $url . '" aria-label="' . esc_attr( $label ) . '" ' . $rel_target_attributes . ' class="wp-block-outermost-social-sharing-link-anchor">';
-	$link .= $icon;
-	$link .= '<span class="wp-block-outermost-social-sharing-link-label' . ( $show_labels ? '' : ' screen-reader-text' ) . '">';
-	$link .= esc_html( $label );
-	$link .= '</span></a></li>';
-
-	return $link;
-}
-
-/**
- * Registers the `outermost/social-sharing-link` block on the server.
- */
-function register_block_outermost_social_sharing_link() {
-	register_block_type_from_metadata(
-		__DIR__ . '/social-sharing-link',
-		array(
-			'render_callback' => 'render_block_outermost_social_sharing_link',
-		)
-	);
-}
-add_action( 'init', 'register_block_outermost_social_sharing_link' );
-
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Returns the SVG for social link.
@@ -66,8 +14,8 @@ add_action( 'init', 'register_block_outermost_social_sharing_link' );
  *
  * @return string SVG Element for service icon.
  */
-function block_outermost_social_sharing_link_get_icon( $service ) {
-	$services = block_outermost_social_sharing_link_services();
+function outermost_social_sharing_link_get_icon( $service ) {
+	$services = outermost_social_sharing_link_services();
 	if ( isset( $services[ $service ] ) && isset( $services[ $service ]['icon'] ) ) {
 		return $services[ $service ]['icon'];
 	}
@@ -82,8 +30,8 @@ function block_outermost_social_sharing_link_get_icon( $service ) {
  *
  * @return string Brand label.
  */
-function block_outermost_social_sharing_link_get_label( $service ) {
-	$services = block_outermost_social_sharing_link_services();
+function outermost_social_sharing_link_get_label( $service ) {
+	$services = outermost_social_sharing_link_services();
 	if ( isset( $services[ $service ] ) && isset( $services[ $service ]['label'] ) ) {
 		return $services[ $service ]['label'];
 	}
@@ -98,8 +46,8 @@ function block_outermost_social_sharing_link_get_label( $service ) {
  *
  * @return string Brand label.
  */
-function block_outermost_social_sharing_link_get_url( $service ) {
-	$services = block_outermost_social_sharing_link_services();
+function outermost_social_sharing_link_get_url( $service ) {
+	$services = outermost_social_sharing_link_services();
 	if ( isset( $services[ $service ] ) && isset( $services[ $service ]['url'] ) ) {
 		// The print service uses Javascript and should be escaped differently.
 		return 'print' === $service ? esc_js( $services[ $service ]['url'] ) : esc_url( $services[ $service ]['url'] );
@@ -116,7 +64,7 @@ function block_outermost_social_sharing_link_get_url( $service ) {
  *
  * @return array|string
  */
-function block_outermost_social_sharing_link_services( $service = '', $field = '' ) {
+function outermost_social_sharing_link_services( $service = '', $field = '' ) {
 	global $post;
 
 	if ( has_post_thumbnail() ) {
@@ -229,15 +177,15 @@ function block_outermost_social_sharing_link_services( $service = '', $field = '
  *
  * @return string Inline CSS styles for link's icon and background colors.
  */
-function block_outermost_social_sharing_link_get_color_styles( $context ) {
+function outermost_social_sharing_link_get_color_styles( $context ) {
 	$styles = array();
 
 	if ( array_key_exists( 'iconColorValue', $context ) ) {
-		$styles[] = 'color: ' . $context['iconColorValue'] . '; ';
+		$styles[] = 'color:' . $context['iconColorValue'] . ';';
 	}
 
 	if ( array_key_exists( 'iconBackgroundColorValue', $context ) ) {
-		$styles[] = 'background-color: ' . $context['iconBackgroundColorValue'] . '; ';
+		$styles[] = 'background-color:' . $context['iconBackgroundColorValue'] . ';';
 	}
 
 	return implode( '', $styles );
