@@ -39,7 +39,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 );
 
 $icon_link  = '<li ' . $wrapper_attributes . '>';
-$icon_link .= '<a href="' . esc_url( $url ) . '" aria-label="' . esc_attr( $label ) . '" ' . $rel_target_attributes . ' class="wp-block-outermost-social-sharing-link-anchor">';
+$icon_link .= '<a href="' . $url . '" aria-label="' . esc_attr( $label ) . '" ' . $rel_target_attributes . ' class="wp-block-outermost-social-sharing-link-anchor">';
 $icon_link .= $icon;
 $icon_link .= '<span class="wp-block-outermost-social-sharing-link-label' . ( $show_labels ? '' : ' screen-reader-text' ) . '">';
 $icon_link .= esc_html( $label );
