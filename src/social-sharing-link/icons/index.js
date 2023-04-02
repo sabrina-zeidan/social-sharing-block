@@ -1,3 +1,4 @@
+export * from './copy-url';
 export * from './facebook';
 export * from './flipboard';
 export * from './line';

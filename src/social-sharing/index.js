@@ -42,4 +42,4 @@ const settings = {
 /**
  * Register the Social Sharing Block.
  */
- registerBlockType( { name, ...metadata }, settings );
+registerBlockType( { name, ...metadata }, settings );

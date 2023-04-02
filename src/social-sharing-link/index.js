@@ -21,4 +21,4 @@ const settings = {
 /**
  * Register the Social Sharing Link block.
  */
- registerBlockType( { name, ...metadata }, settings );
+registerBlockType( { name, ...metadata }, settings );

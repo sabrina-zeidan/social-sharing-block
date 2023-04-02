@@ -27,10 +27,10 @@ import { getIconBySite, getNameBySite, getLabelBySite } from './social-list';
 
 const SocialSharingLinkEdit = ( { attributes, context, setAttributes } ) => {
 	const { service, label } = attributes;
-	const { 
-		showLabels, 
-		iconColor, 
-		iconColorValue, 
+	const {
+		showLabels,
+		iconColor,
+		iconColorValue,
 		iconBackgroundColor,
 		iconBackgroundColorValue,
 	} = context;

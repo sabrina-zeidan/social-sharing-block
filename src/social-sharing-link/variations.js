@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
+	CopyURLIcon,
 	FacebookIcon,
 	FlipboardIcon,
 	LineIcon,
@@ -26,6 +27,12 @@ import {
 } from './icons';
 
 const variations = [
+	{
+		name: 'copy-url',
+		attributes: { service: 'copy-url' },
+		title: 'Copy URL',
+		icon: CopyURLIcon,
+	},
 	{
 		name: 'facebook',
 		attributes: { service: 'facebook' },
