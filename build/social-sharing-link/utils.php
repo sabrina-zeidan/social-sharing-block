@@ -50,16 +50,15 @@ function outermost_social_sharing_link_get_url( $service ) {
 	$services = outermost_social_sharing_link_services();
 	if ( isset( $services[ $service ] ) && isset( $services[ $service ]['url'] ) ) {
 		
-		// The print service uses Javascript and should be escaped differently,
-		// and Viber has a strange share URL that gets stripped by esc_attr.
-		if ( 'print' === $service || 'viber' === $service ) {
+		// Viber has a strange share URL that gets stripped by esc_attr.
+		if ( 'viber' === $service ) {
 			return esc_js( $services[ $service ]['url'] );
 		} else {
 			return esc_url( $services[ $service ]['url'] );
 		}
 	}
 
-	return esc_url( $services['mail']['url'] );
+	return '#';
 }
 
 /**
@@ -86,6 +85,10 @@ function outermost_social_sharing_link_services( $service = '', $field = '' ) {
 	$separator = '%20&mdash;%20';
 
 	$services_data = array(
+		'copy-url'  => array(
+			'label' => __( 'Copy URL', 'social-sharing-block' ),
+			'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M12.856 5.457l-.937.92a1.002 1.002 0 000 1.437 1.047 1.047 0 001.463 0l.984-.966c.967-.95 2.542-1.135 3.602-.288a2.54 2.54 0 01.203 3.81l-2.903 2.852a2.646 2.646 0 01-3.696 0l-1.11-1.09L9 13.57l1.108 1.089c1.822 1.788 4.802 1.788 6.622 0l2.905-2.852a4.558 4.558 0 00-.357-6.82c-1.893-1.517-4.695-1.226-6.422.47"></path><path d="M11.144 19.543l.937-.92a1.002 1.002 0 000-1.437 1.047 1.047 0 00-1.462 0l-.985.966c-.967.95-2.542 1.135-3.602.288a2.54 2.54 0 01-.203-3.81l2.903-2.852a2.646 2.646 0 013.696 0l1.11 1.09L15 11.43l-1.108-1.089c-1.822-1.788-4.802-1.788-6.622 0l-2.905 2.852a4.558 4.558 0 00.357 6.82c1.893 1.517 4.695 1.226 6.422-.47"></path></svg>',
+		),
 		'facebook'  => array(
 			'label' => __( 'Share on Facebook', 'social-sharing-block' ),
 			'url'   => 'https://www.facebook.com/sharer/sharer.php?u=' . $permalink . '&title=' . $title,
@@ -123,7 +126,6 @@ function outermost_social_sharing_link_services( $service = '', $field = '' ) {
 		),
 		'print'     => array(
 			'label' => __( 'Print this Page', 'social-sharing-block' ),
-			'url'   => 'javascript:window.print()',
 			'icon'  => '<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="m14.639 3 4.222 4.235v3.177h.528c1.113 0 2.025.864 2.105 1.96l.006.157v5.295h-2.639v2.117c0 .585-.472 1.059-1.055 1.059H6.194a1.057 1.057 0 0 1-1.055-1.059v-2.117H2.5v-5.295c0-1.17.945-2.117 2.111-2.117h.528V4.059C5.139 3.474 5.61 3 6.194 3h8.445Zm2.639 13.235H6.722v3.177h10.556v-3.177Zm2.11-4.5a.793.793 0 0 0-.79.794.793.793 0 1 0 .79-.794Zm-5.277-7.147H6.722v6.883h10.556V7.765h-2.111a1.057 1.057 0 0 1-1.056-1.06V4.589Z"></path></svg>',
 		),
 		'reddit'    => array(

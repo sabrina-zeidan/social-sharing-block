@@ -43,6 +43,8 @@ $icon_link .= '<a href="' . $url . '" aria-label="' . esc_attr( $label ) . '" ' 
 $icon_link .= $icon;
 $icon_link .= '<span class="wp-block-outermost-social-sharing-link-label' . ( $show_labels ? '' : ' screen-reader-text' ) . '">';
 $icon_link .= esc_html( $label );
-$icon_link .= '</span></a></li>';
+$icon_link .= '</span>';
+$icon_link .= 'copy-url' === $service ? '<span class="wp-block-outermost-social-sharing-link-tooltip">' . __( 'Copy URL', 'social-sharing-block' ) . '</span>' : '';
+$icon_link .= '</a></li>';
 
 echo $icon_link;
